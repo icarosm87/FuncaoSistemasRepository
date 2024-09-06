@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FI.AtividadeEntrevista.DML;
+using FI.AtividadeEntrevista.Utils;
 
 namespace WebAtividadeEntrevista.Controllers
 {
@@ -40,6 +41,10 @@ namespace WebAtividadeEntrevista.Controllers
 
             if (bo.VerificarExistencia(model.Cpf))
                 return Json("Este CPF já está cadastrado para um cliente.");
+
+            if(!CpfValidacao.Validar(cliente.Cpf))
+                return Json("Este CPF é inválido.");
+
 
             model.Id = bo.Incluir(new Cliente()
             {

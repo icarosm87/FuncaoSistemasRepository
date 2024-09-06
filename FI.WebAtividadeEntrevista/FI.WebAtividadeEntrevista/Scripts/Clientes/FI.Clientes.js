@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-        $('#Cpf').mask('000.000.000-00');
     $('#formCadastro').submit(function (e) {
         e.preventDefault();
         $.ajax({
@@ -15,7 +14,7 @@
                 "Cidade": $(this).find("#Cidade").val(),
                 "Logradouro": $(this).find("#Logradouro").val(),
                 "Telefone": $(this).find("#Telefone").val(),
-                "Cpf": $(this).find("#Cpf").val().inputmask('999.999.999-99')
+                "Cpf": $(this).find("#Cpf").val()
             },
             error:
             function (r) {

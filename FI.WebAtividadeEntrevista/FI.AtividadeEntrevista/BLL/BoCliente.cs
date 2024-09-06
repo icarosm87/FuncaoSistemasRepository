@@ -8,6 +8,8 @@ namespace FI.AtividadeEntrevista.BLL
 {
     public class BoCliente
     {
+        public const int TamanhoCpf = 11;
+
         /// <summary>
         /// Inclui um novo cliente
         /// </summary>
@@ -78,5 +80,6 @@ namespace FI.AtividadeEntrevista.BLL
             DAL.DaoCliente cli = new DAL.DaoCliente();
             return cli.VerificarExistencia(CPF);
         }
+
     }
 }
