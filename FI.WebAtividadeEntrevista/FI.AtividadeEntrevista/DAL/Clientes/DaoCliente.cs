@@ -82,11 +82,13 @@ namespace FI.AtividadeEntrevista.DAL
         /// </summary>
         /// <param name="CPF">CPF do cliente</param>
 
-        internal bool VerificarExistencia(string CPF)
+        internal bool VerificarExistencia(string CPF, long Id)
         {
-            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
-
-            parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", CPF));
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
+            {
+                new System.Data.SqlClient.SqlParameter("CPF", CPF),
+                new System.Data.SqlClient.SqlParameter("ID", Id)
+            };
 
             DataSet ds = base.Consultar("FI_SP_VerificaCliente", parametros);
 
@@ -166,24 +168,27 @@ namespace FI.AtividadeEntrevista.DAL
             base.Executar("FI_SP_DelCliente", parametros);
         }
 
-        private List<DML.Cliente> Converter(DataSet ds)
+        private List<Cliente> Converter(DataSet ds)
         {
-            List<DML.Cliente> lista = new List<DML.Cliente>();
+            List<Cliente> lista = new List<Cliente>();
             if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
-                    DML.Cliente cli = new DML.Cliente();
-                    cli.Id = row.Field<long>("Id");
-                    cli.CEP = row.Field<string>("CEP");
-                    cli.Cidade = row.Field<string>("Cidade");
-                    cli.Email = row.Field<string>("Email");
-                    cli.Estado = row.Field<string>("Estado");
-                    cli.Logradouro = row.Field<string>("Logradouro");
-                    cli.Nacionalidade = row.Field<string>("Nacionalidade");
-                    cli.Nome = row.Field<string>("Nome");
-                    cli.Sobrenome = row.Field<string>("Sobrenome");
-                    cli.Telefone = row.Field<string>("Telefone");
+                    Cliente cli = new Cliente
+                    {
+                        Id = row.Field<long>("Id"),
+                        CEP = row.Field<string>("CEP"),
+                        Cidade = row.Field<string>("Cidade"),
+                        Email = row.Field<string>("Email"),
+                        Estado = row.Field<string>("Estado"),
+                        Logradouro = row.Field<string>("Logradouro"),
+                        Nacionalidade = row.Field<string>("Nacionalidade"),
+                        Nome = row.Field<string>("Nome"),
+                        Sobrenome = row.Field<string>("Sobrenome"),
+                        Telefone = row.Field<string>("Telefone"),
+                        Cpf = row.Field<string>("Cpf")
+                    };
                     lista.Add(cli);
                 }
             }

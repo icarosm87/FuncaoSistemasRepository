@@ -91,9 +91,7 @@ namespace FI.AtividadeEntrevista.Utils
 
                 return this;
             }
-
-            //
-
+            
             public DigitoVerificador Substituindo(string substituto, params int[] digitos)
             {
                 foreach (var i in digitos)

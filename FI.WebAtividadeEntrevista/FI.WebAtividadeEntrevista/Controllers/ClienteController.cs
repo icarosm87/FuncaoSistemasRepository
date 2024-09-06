@@ -39,12 +39,17 @@ namespace WebAtividadeEntrevista.Controllers
                 return Json(string.Join(Environment.NewLine, erros));
             }
 
-            if (bo.VerificarExistencia(model.Cpf))
+            if (bo.VerificarExistencia(cliente.Cpf, cliente.Id))
+            {
+                Response.StatusCode = 400;
                 return Json("Este CPF já está cadastrado para um cliente.");
+            }
 
-            if(!CpfValidacao.Validar(cliente.Cpf))
+            if (!CpfValidacao.Validar(cliente.Cpf))
+            {
+                Response.StatusCode = 400;
                 return Json("Este CPF é inválido.");
-
+            }
 
             model.Id = bo.Incluir(new Cliente()
             {
@@ -78,24 +83,35 @@ namespace WebAtividadeEntrevista.Controllers
                 Response.StatusCode = 400;
                 return Json(string.Join(Environment.NewLine, erros));
             }
-            else
-            {
-                bo.Alterar(new Cliente()
-                {
-                    Id = model.Id,
-                    CEP = model.CEP,
-                    Cidade = model.Cidade,
-                    Email = model.Email,
-                    Estado = model.Estado,
-                    Logradouro = model.Logradouro,
-                    Nacionalidade = model.Nacionalidade,
-                    Nome = model.Nome,
-                    Sobrenome = model.Sobrenome,
-                    Telefone = model.Telefone
-                });
 
-                return Json("Cadastro alterado com sucesso");
+            var cliente = model;
+            if (bo.VerificarExistencia(cliente.Cpf, cliente.Id))
+            {
+                Response.StatusCode = 400;
+                return Json("Este CPF já está cadastrado para outro cliente.");
             }
+
+            if (!CpfValidacao.Validar(cliente.Cpf))
+            {
+                Response.StatusCode = 400;
+                return Json("Este CPF é inválido.");
+            }
+
+            bo.Alterar(new Cliente()
+            {
+                Id = model.Id,
+                CEP = model.CEP,
+                Cidade = model.Cidade,
+                Email = model.Email,
+                Estado = model.Estado,
+                Logradouro = model.Logradouro,
+                Nacionalidade = model.Nacionalidade,
+                Nome = model.Nome,
+                Sobrenome = model.Sobrenome,
+                Telefone = model.Telefone
+            });
+
+            return Json("Cadastro alterado com sucesso");
         }
 
         [HttpGet]
@@ -103,7 +119,7 @@ namespace WebAtividadeEntrevista.Controllers
         {
             BoCliente bo = new BoCliente();
             Cliente cliente = bo.Consultar(id);
-            Models.ClienteModel model = null;
+            ClienteModel model = null;
 
             if (cliente != null)
             {
@@ -118,7 +134,8 @@ namespace WebAtividadeEntrevista.Controllers
                     Nacionalidade = cliente.Nacionalidade,
                     Nome = cliente.Nome,
                     Sobrenome = cliente.Sobrenome,
-                    Telefone = cliente.Telefone
+                    Telefone = cliente.Telefone,
+                    Cpf = cliente.Cpf
                 };
 
 
