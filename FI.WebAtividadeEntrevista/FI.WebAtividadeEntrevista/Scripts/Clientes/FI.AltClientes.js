@@ -38,10 +38,12 @@
                     ModalDialog("Ocorreu um erro", "Ocorreu um erro interno no servidor.");
             },
             success:
-            function (r) {
-                ModalDialog("Sucesso!", r)
-                $("#formCadastro")[0].reset();                                
-                window.location.href = urlRetorno;
+                function (r) {
+                ModalDialog("Sucesso!", r);
+                $("#formCadastro")[0].reset();
+                setTimeout(function () {
+                    window.location.href = urlRetorno;
+                }, 3000);
             }
         });
     })

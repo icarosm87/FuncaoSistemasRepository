@@ -10,34 +10,13 @@ namespace FI.AtividadeEntrevista.DAL
     /// </summary>
     internal class DaoCliente : AcessoDados
     {
+        #region Cliente
+
         /// <summary>
         /// Inclui um novo cliente
         /// </summary>
         /// <param name="cliente">Objeto de cliente</param>
-        //internal long Incluir(DML.Cliente cliente)
-        //{
-        //    List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
-
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("NOME", cliente.Nome));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("SOBRENOME", cliente.Sobrenome));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("NACIONALIDADE", cliente.Nacionalidade));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("CEP", cliente.CEP));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("ESTADO", cliente.Estado));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("CIDADE", cliente.Cidade));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("LOGRADOURO", cliente.Logradouro));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("EMAIL", cliente.Email));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("TELEFONE", cliente.Telefone));
-        //    parametros.Add(new System.Data.SqlClient.SqlParameter("CPF", cliente.Cpf));
-
-
-        //    DataSet ds = base.Consultar("FI_SP_IncCliente", parametros);
-        //    long ret = 0;
-        //    if (ds.Tables[0].Rows.Count > 0)
-        //        long.TryParse(ds.Tables[0].Rows[0][0].ToString(), out ret);
-        //    return ret;
-        //}
-
-        internal long Incluir(DML.Cliente cliente)
+        internal long Incluir(Cliente cliente)
         {
             List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
         {
@@ -60,12 +39,11 @@ namespace FI.AtividadeEntrevista.DAL
             return ret;
         }
 
-
         /// <summary>
         /// Consulta cliente pelo Id e retorna todos se o Id for zero
         /// </summary>
         /// <param name="Id">Id do cliente</param>
-        internal DML.Cliente Consultar(long Id)
+        internal Cliente Consultar(long Id)
         {
             List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
 
@@ -120,7 +98,7 @@ namespace FI.AtividadeEntrevista.DAL
         /// <summary>
         /// Lista todos os clientes
         /// </summary>
-        internal List<DML.Cliente> Listar()
+        internal List<Cliente> Listar()
         {
             List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
 
@@ -133,27 +111,29 @@ namespace FI.AtividadeEntrevista.DAL
         }
 
         /// <summary>
-        /// Inclui um novo cliente
+        /// Altera um cliente
         /// </summary>
         /// <param name="cliente">Objeto de cliente</param>
-        internal void Alterar(DML.Cliente cliente)
+        internal void Alterar(Cliente cliente)
         {
-            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>();
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
+            {
+                new System.Data.SqlClient.SqlParameter("Nome", cliente.Nome),
+                new System.Data.SqlClient.SqlParameter("Sobrenome", cliente.Sobrenome),
+                new System.Data.SqlClient.SqlParameter("Nacionalidade", cliente.Nacionalidade),
+                new System.Data.SqlClient.SqlParameter("CEP", cliente.CEP),
+                new System.Data.SqlClient.SqlParameter("Estado", cliente.Estado),
+                new System.Data.SqlClient.SqlParameter("Cidade", cliente.Cidade),
+                new System.Data.SqlClient.SqlParameter("Logradouro", cliente.Logradouro),
+                new System.Data.SqlClient.SqlParameter("Email", cliente.Email),
+                new System.Data.SqlClient.SqlParameter("Telefone", cliente.Telefone),
+                new System.Data.SqlClient.SqlParameter("ID", cliente.Id),
+                new System.Data.SqlClient.SqlParameter("CPF", cliente.Cpf)
 
-            parametros.Add(new System.Data.SqlClient.SqlParameter("Nome", cliente.Nome));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("Sobrenome", cliente.Sobrenome));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("Nacionalidade", cliente.Nacionalidade));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("CEP", cliente.CEP));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("Estado", cliente.Estado));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("Cidade", cliente.Cidade));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("Logradouro", cliente.Logradouro));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("Email", cliente.Email));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("Telefone", cliente.Telefone));
-            parametros.Add(new System.Data.SqlClient.SqlParameter("ID", cliente.Id));
+            };
 
             base.Executar("FI_SP_AltCliente", parametros);
         }
-
 
         /// <summary>
         /// Excluir Cliente
@@ -195,5 +175,135 @@ namespace FI.AtividadeEntrevista.DAL
 
             return lista;
         }
+
+        #endregion
+
+        #region Beneficiarios
+
+        /// <summary>
+        /// Inclui um novo cliente
+        /// </summary>
+        /// <param name="beneficiario">Objeto de beneficiario</param>
+        internal long IncluirBeneficiario(Beneficiario beneficiario)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
+        {
+            new System.Data.SqlClient.SqlParameter("@NOME", beneficiario.Nome),
+            new System.Data.SqlClient.SqlParameter("@CPF", beneficiario.Cpf),
+            new System.Data.SqlClient.SqlParameter("@IDCLIENTE", beneficiario.IdCliente)
+        };
+
+            DataSet ds = base.Consultar("FI_SP_IncBeneficiario", parametros);
+            long ret = 0;
+            if (ds.Tables[0].Rows.Count > 0)
+                long.TryParse(ds.Tables[0].Rows[0][0].ToString(), out ret);
+            return ret;
+        }
+
+        internal bool VerificarExistenciaBeneficiario(string CPF, long Id, long IdCliente)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
+            {
+                new System.Data.SqlClient.SqlParameter("CPF", CPF),
+                new System.Data.SqlClient.SqlParameter("ID", Id),
+                new System.Data.SqlClient.SqlParameter("IDCLIENTE", IdCliente)
+            };
+
+            DataSet ds = base.Consultar("FI_SP_VerificaBeneficiario", parametros);
+
+            return ds.Tables[0].Rows.Count > 0;
+        }
+
+        internal Beneficiario ConsultarBeneficiario(long Id)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
+            {
+                new System.Data.SqlClient.SqlParameter("ID", Id)
+            };
+
+            DataSet ds = base.Consultar("FI_SP_ConsBeneficiario", parametros);
+            var beneficiario = ConverterBeneficiario(ds);
+
+            return beneficiario;
+        }
+
+        internal List<Beneficiario> ListarBeneficiarios(long IdCliente)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
+            {
+                new System.Data.SqlClient.SqlParameter("IdCliente", IdCliente)
+            };
+
+            DataSet ds = base.Consultar("FI_SP_ListBeneficiariosPorCliente", parametros);
+            List<Beneficiario> beneficiarios = new List<Beneficiario>();
+
+            if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    DataSet singleRowDataSet = ds.Clone();
+                    singleRowDataSet.Tables[0].ImportRow(row);
+                    Beneficiario beneficiario = ConverterBeneficiario(singleRowDataSet);
+                    if (beneficiario != null)
+                    {
+                        beneficiarios.Add(beneficiario);
+                    }
+                }
+            }
+
+            return beneficiarios;
+        }
+
+
+        /// <summary>
+        /// Altera um beneficiário
+        /// </summary>
+        /// <param name="beneficiario">Objeto de cliente</param>
+        internal void AlterarBeneficiario(Beneficiario beneficiario)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
+            {
+                new System.Data.SqlClient.SqlParameter("ID", beneficiario.Id),
+                new System.Data.SqlClient.SqlParameter("Nome", beneficiario.Nome),
+                new System.Data.SqlClient.SqlParameter("Cpf", beneficiario.Cpf),
+                new System.Data.SqlClient.SqlParameter("IDCLIENTE", beneficiario.IdCliente)
+            };
+
+            base.Executar("FI_SP_AltBeneficiario", parametros);
+        }
+
+        /// <summary>
+        /// Excluir Beneficiário
+        /// </summary>
+        /// <param name="Id">Id do beneficiário</param>
+        internal void ExcluirBeneficiario(long Id)
+        {
+            List<System.Data.SqlClient.SqlParameter> parametros = new List<System.Data.SqlClient.SqlParameter>
+            {
+                new System.Data.SqlClient.SqlParameter("Id", Id)
+            };
+
+            base.Executar("FI_SP_DelBeneficiario", parametros);
+        }
+
+        private Beneficiario ConverterBeneficiario(DataSet ds)
+        {
+            Beneficiario beneficiario = null;
+            if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = ds.Tables[0].Rows[0];
+                beneficiario = new Beneficiario
+                {
+                    Id = row.Field<long>("Id"),
+                    Nome = row.Field<string>("Nome"),
+                    Cpf = row.Field<string>("Cpf"),
+                    IdCliente = row.Field<long>("IdCliente"),
+                };
+            }
+
+            return beneficiario;
+        }
+
+        #endregion
     }
 }

@@ -1,20 +1,17 @@
-﻿using System;
+﻿using FI.AtividadeEntrevista.DML;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FI.AtividadeEntrevista.BLL
 {
     public class BoCliente
     {
-        public const int TamanhoCpf = 11;
+        #region Cliente
 
         /// <summary>
         /// Inclui um novo cliente
         /// </summary>
         /// <param name="cliente">Objeto de cliente</param>
-        public long Incluir(DML.Cliente cliente)
+        public long Incluir(Cliente cliente)
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
             return cli.Incluir(cliente);
@@ -24,10 +21,21 @@ namespace FI.AtividadeEntrevista.BLL
         /// Altera um cliente
         /// </summary>
         /// <param name="cliente">Objeto de cliente</param>
-        public void Alterar(DML.Cliente cliente)
+        public void Alterar(Cliente cliente)
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
             cli.Alterar(cliente);
+        }
+
+        /// <summary>
+        /// VerificaExistencia
+        /// </summary>
+        /// <param name="CPF"></param>
+        /// <returns></returns>
+        public bool VerificarExistencia(string CPF, long Id)
+        {
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+            return cli.VerificarExistencia(CPF, Id);
         }
 
         /// <summary>
@@ -35,7 +43,7 @@ namespace FI.AtividadeEntrevista.BLL
         /// </summary>
         /// <param name="id">id do cliente</param>
         /// <returns></returns>
-        public DML.Cliente Consultar(long id)
+        public Cliente Consultar(long id)
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
             return cli.Consultar(id);
@@ -55,7 +63,7 @@ namespace FI.AtividadeEntrevista.BLL
         /// <summary>
         /// Lista os clientes
         /// </summary>
-        public List<DML.Cliente> Listar()
+        public List<Cliente> Listar()
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
             return cli.Listar();
@@ -64,22 +72,71 @@ namespace FI.AtividadeEntrevista.BLL
         /// <summary>
         /// Lista os clientes
         /// </summary>
-        public List<DML.Cliente> Pesquisa(int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
+        public List<Cliente> Pesquisa(int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
-            return cli.Pesquisa(iniciarEm,  quantidade, campoOrdenacao, crescente, out qtd);
+            return cli.Pesquisa(iniciarEm, quantidade, campoOrdenacao, crescente, out qtd);
+        }
+
+        #endregion
+
+        #region Beneficiario
+
+        /// <summary>
+        /// Inclui um novo beneficiario
+        /// </summary>
+        /// <param name="beneficiario">Objeto de beneficiário</param>
+        public long Incluir(Beneficiario beneficiario)
+        {
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+            return cli.IncluirBeneficiario(beneficiario);
         }
 
         /// <summary>
-        /// VerificaExistencia
+        /// Altera um beneficiário
         /// </summary>
-        /// <param name="CPF"></param>
-        /// <returns></returns>
-        public bool VerificarExistencia(string CPF, long Id)
+        /// <param name="beneficiario">Objeto de beneficiario</param>
+        public void AlterarBeneficiario(Beneficiario beneficiario)
         {
             DAL.DaoCliente cli = new DAL.DaoCliente();
-            return cli.VerificarExistencia(CPF, Id);
+            cli.AlterarBeneficiario(beneficiario);
         }
 
+        /// <summary>
+        /// Excluir o beneficiário pelo id
+        /// </summary>
+        /// <param name="id">id do beneficiário</param>
+        /// <returns></returns>
+        public void ExcluirBeneficiario(long id)
+        {
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+            cli.ExcluirBeneficiario(id);
+        }
+
+        /// <summary>
+        /// Consulta um beneficiário
+        /// </summary>
+        public Beneficiario ConsultarBeneficiario(long IdCliente)
+        {            
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+            return cli.ConsultarBeneficiario(IdCliente);
+        }
+
+        /// <summary>
+        /// Lista os beneficiários
+        /// </summary>
+        public List<Beneficiario> ListarBeneficiarios(long IdCliente)
+        {
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+            return cli.ListarBeneficiarios(IdCliente);
+        }
+
+        public bool VerificarExistenciaBeneficiario(string CPF, long Id, long IdCliente)
+        {
+            DAL.DaoCliente cli = new DAL.DaoCliente();
+            return cli.VerificarExistenciaBeneficiario(CPF, Id, IdCliente);
+        }
+
+        #endregion
     }
 }
