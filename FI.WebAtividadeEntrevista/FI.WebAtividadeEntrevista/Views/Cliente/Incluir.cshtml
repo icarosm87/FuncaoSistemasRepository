@@ -7,6 +7,19 @@
         var urlPost = '@Url.Action("Incluir", "Cliente", new { area = "" })';
     </script>
     @Scripts.Render("~/bundles/clientes")
+    @Scripts.Render("~/bundles/site")
+    <script>
+        $(document).ready(function () {
+            SetModal();
+        })
+    </script>
 }
+<div id="myModal" class="modal fade in">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+        </div>
+    </div>
+</div>
 <h2>@Html.Raw(ViewBag.Title)</h2>
 @Html.Partial("Forms")

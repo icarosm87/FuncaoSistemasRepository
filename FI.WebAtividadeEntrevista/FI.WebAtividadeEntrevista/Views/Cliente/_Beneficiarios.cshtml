@@ -1,0 +1,47 @@
+﻿@using FI.WebAtividadeEntrevista.Extensions
+@model WebAtividadeEntrevista.Models.ClienteModel
+
+<div class="form-horizontal col-md-offset-1">
+
+    @if (Model.Beneficiarios != null && Model.Beneficiarios.Any())
+    {
+        <div>
+            <h3>Beneficiários</h3>
+        </div>
+        <table id="beneficiariosTable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Cpf
+                    </th>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var beneficiario in Model.Beneficiarios)
+                {
+                    <tr>
+                        <td>
+                            @this.FormatarCpf(beneficiario.Cpf)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => beneficiario.Nome)
+                        </td>
+                        <td>
+                            <a class="btn btn-info" href="@Url.Action("AlterarBeneficiario", "Cliente", new {id = beneficiario.Id})" data-modal="">Alterar</a>
+                            <a class="btn btn-danger" href="@Url.Action("ExcluirBeneficiario", "Cliente", new { id = beneficiario.Id })" data-modal="">Remover</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<script>
+    SetModal();
+</script>
